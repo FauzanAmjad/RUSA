@@ -1,0 +1,385 @@
+---
+title: "RRF Notebook"
+output: html_notebook
+---
+
+## ------------------------------------------------- Import Libraries (REQUIRED) -------------------------------------------------
+
+```{r}
+library(readr)
+library(plotrix)
+```
+
+## ----------------------------------------- Import the Dataset from Your Computer (REQUIRED) --------------------------------------
+
+Change the location in the CSV file 
+Ignore the "Missing column names" message if its appears
+
+```{r}
+RUSA_Recovery_Fund_Totals <- read_csv("/Users/fauzanamjad/Desktop/RUSA_Recovery_Fund_Totals.csv")
+```
+
+## ------------- Subset Dataset based on Class Year - Applying Students for Each Class ------------- 
+
+For future use of this notebook, add subset functions that reflect all the class years on the application.
+
+```{r}
+class2021 <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Class Year:` == "2021")
+class2022 <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Class Year:` == "2022")
+class2020 <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Class Year:` == "2020")
+class2023 <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Class Year:` == "2023")
+class2024 <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Class Year:` == "2024")
+classGRAD <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Class Year:` == "GRAD")
+```
+
+## Subset Class Years by Whether they were Recommended - Recommended Students for Each Class Year
+
+For future use of this notebook, change the subset functions/variables to reflect changes made to previous block of code.
+
+```{r}
+class2021Recommended <- subset(class2021, class2021$`Recommend/Denied` == "Recommend")
+class2022Recommended <- subset(class2022, class2022$`Recommend/Denied` == "Recommend")
+class2020Recommended <- subset(class2020, class2020$`Recommend/Denied` == "Recommend")
+class2023Recommended <- subset(class2023, class2023$`Recommend/Denied` == "Recommend")
+class2024Recommended <- subset(class2024, class2024$`Recommend/Denied` == "Recommend")
+classGRADRecommended <- subset(classGRAD, classGRAD$`Recommend/Denied` == "Recommend")
+```
+
+## Number of Applying Students for Each Class Year VS Number of Recommended Students for Each Class Year (TABLE)
+
+Adjust as needed with changes to the previous two blocks. 
+nrow() is the function that tells how many elements (students) are in that specific dataset.
+We store these values in a columns, than combine these columns into a dataframe. 
+
+```{r}
+Class <- c("2021", "2022", "2020", "2023","2024", "Grad")
+Frequency_of_Class <- c(nrow(class2021), nrow(class2022), nrow(class2020), nrow(class2023), nrow(class2024), nrow(classGRAD))
+Recommended_Students <- c(nrow(class2021Recommended), nrow(class2022Recommended), nrow(class2020Recommended), nrow(class2023Recommended), nrow(class2024Recommended), nrow(classGRADRecommended))
+class_breakdown <- data.frame(Class,Frequency_of_Class ,Recommended_Students)
+class_breakdown
+```
+
+## Export 
+
+This code exports a csv file of the class year breakdown so it can be used further in excel.
+Change the Destination to a folder than you want to store the CSV file.
+
+```{r}
+write.csv(class_breakdown, "/Users/fauzanamjad/Desktop/ClassBreakdown.csv", row.names = FALSE)
+```
+
+
+## -----------------------  Subset data based on school - Requesting Students by School -----------------------
+
+Add more schools as need if reflected in the RRF dataset or application. 
+
+```{r}
+classBloustein <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "Bloustein")
+classEMSOP <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "EMSOP")
+classMGSA <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "MGSA")
+classNA <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "N/A")
+classNursing <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "Nursing")
+classRBS <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "RBS")
+classSAS <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "SAS")
+classSOE <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "SOE")
+classSEBS <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`School:` == "SEBS")
+```
+
+## Subset School by Whether or not they were Recommended - Recommended Students by School
+
+If you added schools in the previous block, remember to make the respective change here as well. 
+
+```{r}
+classBloustein_Rec <- subset(classBloustein, classBloustein$`Recommend/Denied` == "Recommend")
+classEMSOP_Rec <- subset(classEMSOP, classEMSOP$`Recommend/Denied` == "Recommend")
+classMGSA_Rec <- subset(classMGSA, classMGSA$`Recommend/Denied` == "Recommend")
+classNA_Rec <- subset(classNA, classNA$`Recommend/Denied` == "Recommend")
+classNursing_Rec <- subset(classNursing, classNursing$`Recommend/Denied` == "Recommend")
+classRBS_Rec <- subset(classRBS, classRBS$`Recommend/Denied` == "Recommend")
+classSOE_Rec <- subset(classSOE, classSOE$`Recommend/Denied` == "Recommend")
+classSEBS_Rec <- subset(classSEBS, classSEBS$`Recommend/Denied` == "Recommend")
+classSAS_Rec <-subset(classSAS, classSAS$`Recommend/Denied` == "Recommend")
+```
+
+## Number of Applying Students by School VS Number of Recommended Students by School
+
+Adjust as needed with changes to the previous two blocks. 
+nrow() is the function that tells how many elements (students) are in that specific dataset.
+We store these values in a columns, than combine these columns into a dataframe. 
+
+```{r}
+School <- c("Bloustein", "EMSOP", "MGSA", "N/A", "Nursing", "RBS", "SAS", "SOE","SEBS")
+School
+Frequency <- c(nrow(classBloustein), nrow(classEMSOP),nrow(classMGSA),nrow(classNA),nrow(classNursing),nrow(classRBS),nrow(classSAS),nrow(classSOE),nrow(classSEBS))
+Frequency
+Recommended_Students1 <- c(nrow(classBloustein_Rec), nrow(classEMSOP_Rec),nrow(classMGSA_Rec),nrow(classNA_Rec),nrow(classNursing_Rec),nrow(classRBS_Rec),nrow(classSAS_Rec),nrow(classSOE_Rec),nrow(classSEBS_Rec))
+breakdown_school <- data.frame(School,Frequency,Recommended_Students1)
+breakdown_school
+```
+
+## Piechart of School Breakdown of Requesting Students
+
+Not the best pie chart you can make, but if you need something quick this should be suffice. 
+
+```{r}
+pct <- round(Frequency/sum(Frequency)*100)
+School <- paste(School, pct) # add percents to labels
+School <- paste(School,"%",sep="") # ad % to labels
+pie(Frequency, labels = School, main="Breakdown by School: All Applications", col=rainbow(length(School)))
+```
+
+## Export School Breakdown - Requesting & Recommended
+
+This code exports a csv file of the school breakdown so it can be used further in excel.
+Change the Destination to a folder than you want to store the CSV file.
+
+```{r}
+write.csv(breakdown_school, "/Users/fauzanamjad/Desktop/SchoolBreakdown.csv", row.names = FALSE)
+```
+
+##  -----------------------  Subset by Whether or not they're on DACA - Requesting Students on or not on DACA -----------------------  
+
+```{r}
+yesDACA <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`DACA (Y/N)` == "Y")
+noDACA <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`DACA (Y/N)` == "N")
+unDACA <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`DACA (Y/N)` == "N/A")
+```
+
+## Subset DACA subsets by recommendation - Applying Students on or not on DACA
+
+```{r}
+yesDACA_rec <- subset(yesDACA, yesDACA$`Recommend/Denied` == "Recommend")
+noDACA_rec <- subset(noDACA, noDACA$`Recommend/Denied` == "Recommend")
+unDACA_rec <- subset(unDACA , unDACA$`Recommend/Denied` == "Recommend")
+```
+
+## DACA VS Not on DACA Students (Requesting and Recommended Data)
+
+```{r}
+DACA_Label <- c("YES", "NO", "N/A")
+DACA_req_freq <- c( nrow(yesDACA) , nrow(noDACA) , nrow(unDACA) ) ## Requesting Students 
+DACA_recom_frq <- c( nrow(yesDACA_rec) , nrow(noDACA_rec) , nrow(unDACA_rec) ) ## Recommended Students
+DACA_breakdown <- data.frame(DACA_Label,DACA_req_freq,DACA_recom_frq) 
+DACA_breakdown
+```
+
+## Piechart of DACA Breakdown
+
+```{r}
+pct <- round(DACA_req_freq/sum(DACA_req_freq)*100)
+DACA_Label <- paste(DACA_Label, pct) # add percents to labels
+DACA_Label <- paste(DACA_Label,"%",sep="") # ad % to labels
+pie(DACA_req_freq, labels = DACA_Label, main="Breakdown by DACA: All Applications", col=rainbow(length(DACA_Label)))
+```
+
+## Export DACA Breakdown
+
+```{r}
+write.csv(DACA_breakdown, "/Users/fauzanamjad/Desktop/DACA_Breakdown.csv", row.names = FALSE)
+```
+
+##  -----------------  Subset by Whether or not they're International - Requesting Students on or not on International -------------------  
+
+```{r}
+yesInternational <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`International (Y/N)` == "Y")
+noInternational<- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`International (Y/N)` == "N")
+unInternational <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`International (Y/N)` == "N/A")
+```
+
+## Subset International subsets by recommendation - Applying Students and whether they're International
+
+```{r}
+yesInternational_rec <- subset(yesInternational, yesInternational$`Recommend/Denied` == "Recommend")
+noInternational_rec <- subset(noInternational, noInternational$`Recommend/Denied` == "Recommend")
+unInternational_rec <- subset(unInternational , unInternational$`Recommend/Denied` == "Recommend")
+```
+
+## International VS Non International Students (Requesting and Recommended Data)
+
+```{r}
+International_Label <- c("YES", "NO", "N/A")
+International_req_freq <- c( nrow(yesInternational) , nrow(noInternational) , nrow(unInternational) ) ## Requesting Students 
+International_recom_frq <- c( nrow(yesInternational_rec) , nrow(noInternational_rec) , nrow(unInternational_rec) ) ## Recommended Students
+International_breakdown <- data.frame(International_Label,International_req_freq,International_recom_frq) 
+International_breakdown
+```
+
+## Piechart of International Students (or nah) Breakdown
+
+```{r}
+pct <- round(International_req_freq/sum(International_req_freq)*100)
+International_Label <- paste(International_Label, pct) # add percents to labels
+International_Label <- paste(International_Label,"%",sep="") # ad % to labels
+pie(International_req_freq, labels = International_Label, main="Breakdown by International Status: All Applications", col=rainbow(length(International_Label)))
+```
+
+## Export International Student Breakdown
+
+```{r}
+write.csv(International_breakdown, "/Users/fauzanamjad/Desktop/International_Breakdown.csv", row.names = FALSE)
+```
+
+##  -----------------------  Subset by Whether or not they're Food Insecure - Requesting Students by Food Insecurity -----------------------  
+
+```{r}
+yesFI <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Food Insecure (Y/n)` == "Y")
+noFI <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Food Insecure (Y/n)` == "N")
+unFI <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Food Insecure (Y/n)` == "N/A")
+```
+
+## Subset Food Insecure subsets by recommendation - Applying Students by Food Insecurity
+
+```{r}
+yesFI_rec <- subset(yesFI, yesFI$`Recommend/Denied` == "Recommend")
+noFI_rec <- subset(noFI, noFI$`Recommend/Denied` == "Recommend")
+unFI_rec <- subset(unFI , unFI$`Recommend/Denied` == "Recommend")
+```
+
+## Food Insecure VS Not Food Insecure Students (Requesting and Recommended Data)
+
+```{r}
+FI_Label <- c("YES", "NO", "N/A")
+FI_req_freq <- c( nrow(yesFI) , nrow(noFI) , nrow(unFI) ) ## Requesting Students 
+FI_recom_frq <- c( nrow(yesFI_rec) , nrow(noFI_rec) , nrow(unFI_rec) ) ## Recommended Students
+FI_breakdown <- data.frame(FI_Label,FI_req_freq,FI_recom_frq) 
+FI_breakdown
+```
+
+## Piechart of Food Insecurity Breakdown
+
+```{r}
+pct <- round(FI_req_freq/sum(FI_req_freq)*100)
+FI_Label <- paste(FI_Label, pct) # add percents to labels
+FI_Label <- paste(FI_Label,"%",sep="") # ad % to labels
+pie(FI_req_freq, labels = FI_Label, main="Breakdown by Food Insecurity: All Applications", col=rainbow(length(FI_Label)))
+```
+
+## Export Food Insecurity Breakdown
+
+```{r}
+write.csv(FI_breakdown, "/Users/fauzanamjad/Desktop/FoodInsecurity_Breakdown.csv", row.names = FALSE)
+```
+
+## --------------------------------- REQUESTED FOOD MONEY SUBSET --------------------------------- 
+
+```{r}
+requestedFoodMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Food Amount:` > 0.00)
+not_requestedFoodMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Food Amount:` == 0.00)
+na_requestedFoodMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Food Amount:` == "N/A")
+```
+
+## Subsetting by recommended people (students who requested money for food)
+
+```{r}
+requestedFoodMoney_rec <- subset(requestedFoodMoney, requestedFoodMoney$`Recommend/Denied` == "Recommend")
+not_requestedFoodMoney_rec <- subset(not_requestedFoodMoney, not_requestedFoodMoney$`Recommend/Denied` == "Recommend")
+na_requestedFoodMoney_rec <- subset(na_requestedFoodMoney, na_requestedFoodMoney$`Recommend/Denied` == "Recommend")
+```
+
+## Table view of Applying VS Recommended Students by whether or not they requested money for food
+
+```{r}
+Requested_Food_Label <- c("YES", "NO", "N/A")
+Requested_Food_req_freq <- c( nrow(requestedFoodMoney) , nrow(not_requestedFoodMoney) , nrow(na_requestedFoodMoney) ) ## Requesting Students 
+Requested_Food_recom_frq <- c( nrow(requestedFoodMoney_rec) , nrow(not_requestedFoodMoney_rec) , nrow(na_requestedFoodMoney_rec) ) ## Recommended Students
+Requested_Food_breakdown <- data.frame(Requested_Food_Label,Requested_Food_req_freq,Requested_Food_recom_frq) 
+Requested_Food_breakdown
+```
+
+## Pie chart for Food Requesting Breakdown of Applying Students
+
+```{r}
+pct <- round(Requested_Food_req_freq/sum(Requested_Food_req_freq)*100)
+Requested_Food_Label <- paste(Requested_Food_Label, pct) # add percents to labels
+Requested_Food_Label <- paste(Requested_Food_Label,"%",sep="") # ad % to labels
+pie(Requested_Food_req_freq, labels = Requested_Food_Label, main="Breakdown by Food Money Requests: All Applications", col=rainbow(length(Requested_Food_Label)))
+```
+
+## Export 
+
+```{r}
+write.csv(Requested_Food_breakdown, "/Users/fauzanamjad/Desktop/RequestedFood_Breakdown.csv", row.names = FALSE)
+```
+
+## --------------------------------- REQUESTED RENT MONEY SUBSET --------------------------------- 
+
+```{r}
+requestedRentMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Rent Amount:` > 0.00)
+not_requestedRentMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Rent Amount:` == 0.00)
+na_requestedRentMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Rent Amount:` == "N/A")
+```
+
+## Subsetting by recommended people (students who requested money for rent)
+
+```{r}
+requestedRentMoney_rec <- subset(requestedRentMoney, requestedRentMoney$`Recommend/Denied` == "Recommend")
+not_requestedRentMoney_rec <- subset(not_requestedRentMoney, not_requestedRentMoney$`Recommend/Denied` == "Recommend")
+na_requestedRentMoney_rec <- subset(na_requestedRentMoney, na_requestedRentMoney$`Recommend/Denied` == "Recommend")
+```
+
+## Table view of Applying VS Recommended Students by whether or not they requested money for rent
+
+```{r}
+Requested_Rent_Label <- c("YES", "NO", "N/A")
+Requested_Rent_req_freq <- c( nrow(requestedRentMoney) , nrow(not_requestedRentMoney) , nrow(na_requestedRentMoney) ) ## Requesting Students 
+Requested_Rent_recom_frq <- c( nrow(requestedRentMoney_rec) , nrow(not_requestedRentMoney_rec) , nrow(na_requestedRentMoney_rec) ) ## Recommended Students
+Requested_Rent_breakdown <- data.frame(Requested_Rent_Label,Requested_Rent_req_freq,Requested_Rent_recom_frq) 
+Requested_Rent_breakdown
+```
+
+## Pie chart for Rent Requesting Breakdown of Applying Students
+
+```{r}
+pct <- round(Requested_Rent_req_freq/sum(Requested_Rent_req_freq)*100)
+Requested_Rent_Label <- paste(Requested_Rent_Label, pct) # add percents to labels
+Requested_Rent_Label <- paste(Requested_Rent_Label,"%",sep="") # ad % to labels
+pie(Requested_Rent_req_freq, labels = Requested_Rent_Label, main="Breakdown by Rent Money Requests: All Applications", col=rainbow(length(Requested_Rent_Label)))
+```
+
+## Export 
+
+```{r}
+write.csv(Requested_Rent_breakdown, "/Users/fauzanamjad/Desktop/RequestedRent_Breakdown.csv", row.names = FALSE)
+```
+
+## --------------------------------- REQUESTED OTHER MONEY SUBSET --------------------------------- 
+
+```{r}
+requestedOtherMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Other:` > 0.00)
+not_requestedOtherMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Other:` == 0.00)
+na_requestedOtherMoney <- subset(RUSA_Recovery_Fund_Totals, RUSA_Recovery_Fund_Totals$`Other:` == "N/A")
+```
+
+## Subsetting by recommended people (students who requested money for other)
+
+```{r}
+requestedOtherMoney_rec <- subset(requestedOtherMoney, requestedOtherMoney$`Recommend/Denied` == "Recommend")
+not_requestedOtherMoney_rec <- subset(not_requestedOtherMoney, not_requestedOtherMoney$`Recommend/Denied` == "Recommend")
+na_requestedOtherMoney_rec <- subset(na_requestedOtherMoney, na_requestedOtherMoney$`Recommend/Denied` == "Recommend")
+```
+
+## Table view of Applying VS Recommended Students by whether or not they requested money for other
+
+```{r}
+Requested_Other_Label <- c("YES", "NO", "N/A")
+Requested_Other_req_freq <- c( nrow(requestedOtherMoney) , nrow(not_requestedOtherMoney) , nrow(na_requestedOtherMoney) ) ## Requesting Students 
+Requested_Other_recom_frq <- c( nrow(requestedOtherMoney_rec) , nrow(not_requestedOtherMoney_rec) , nrow(na_requestedOtherMoney_rec) ) ## Recommended Students
+Requested_Other_breakdown <- data.frame(Requested_Other_Label,Requested_Other_req_freq,Requested_Other_recom_frq) 
+Requested_Other_breakdown
+```
+
+## Pie chart for Other Requesting Breakdown of Applying Students
+
+```{r}
+pct <- round(Requested_Other_req_freq/sum(Requested_Other_req_freq)*100)
+Requested_Other_Label <- paste(Requested_Other_Label, pct) # add percents to labels
+Requested_Other_Label <- paste(Requested_Other_Label,"%",sep="") # ad % to labels
+pie(Requested_Other_req_freq, labels = Requested_Other_Label, main="Breakdown by Money Requests for Other Needs: All Applications", col=rainbow(length(Requested_Other_Label)))
+```
+
+## Export 
+
+```{r}
+write.csv(Requested_Other_breakdown, "/Users/fauzanamjad/Desktop/RequestedOther_Breakdown.csv", row.names = FALSE)
+```
+
